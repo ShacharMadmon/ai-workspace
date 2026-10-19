@@ -12,13 +12,19 @@ def scan_folder(folder):
                 counts[suf] = 0
         
             counts[suf] = counts[suf] + 1 
-    return counts, total_size                
-folder_name = input("Please, Select a Folder: ")
-folder = Path(folder_name)
-try: 
-    counts, num_sum = scan_folder(folder)
-    print(counts)
-    print("Total:", num_sum)
-except FileNotFoundError:
-    print("Folder not found:", folder_name)
+    return counts, total_size     
 
+
+def main():
+    folder_name = input("Please, Select a Folder: ")
+    folder = Path(folder_name)
+    try: 
+        counts, total_size = scan_folder(folder)
+        print(counts)
+        print("Total:", total_size)
+    except FileNotFoundError:
+        print("Folder not found:", folder_name)
+
+
+if __name__ == "__main__":
+    main()
