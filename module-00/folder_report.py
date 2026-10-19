@@ -24,7 +24,8 @@ def main():
         print("Total:", total_size)
     except FileNotFoundError:
         print("Folder not found:", folder_name)
-
+    except PermissionError:
+        print("No permission to read folder:", folder_name)
 
 if __name__ == "__main__":
     main()
