@@ -8,13 +8,16 @@ class Task:
     done: bool = False
 
 
-tasks = []
-tasks.append(Task("Buy milk",1,True))
-tasks.append(Task("Fix the car",2))
-tasks.append(Task("Cook Lunch",3))
+class TaskManager:
+    def __init__(self):
+        self.tasks = []
+
+    def add(self, title, priority):
+        self.tasks.append(Task(title, priority))
+        
 
 
-for task in tasks:
-    if task.done is False:
-        print(task.title, task.priority)
-
+manager = TaskManager()
+manager.add("Buy milk", 1)
+manager.add("Cook lunch", 2)
+print(manager.tasks)
