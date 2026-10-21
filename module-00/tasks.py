@@ -16,11 +16,52 @@ class TaskManager:
         if priority > 5 or priority < 1:
             raise ValueError("Priority must be between 1 and 5")
         self.tasks.append(Task(title, priority))
-        
+    def open_tasks(self):
+        result = []
+        for task in self.tasks:
+            if task.done == False:
+                result.append(task)
+        return result
+    def done_tasks(self):
+            result = []
+            for task in self.tasks:
+                if task.done:
+                    result.append(task)
+            return result
+    def urgent_tasks(self):
+        result = []
+        for task in self.tasks:
+            if task.priority == 1:
+                result.append(task)
+        return result
+    def tasks_by_priority(self, level):
+            result = []
+            for task in self.tasks:
+                if task.priority == level:
+                    result.append(task)
+            return result
+    def open_titles(self):
+            result = []
+            for task in self.tasks:
+                if task.done == False:
+                    result.append(task.title)
+            return result
+    def at_least(self, level):
+                result = []
+                for task in self.tasks:
+                    if task.priority >= level:
+                        result.append(task)
+                return result
+    def count_open(self):
+        return len(self.open_tasks())
 
+    
 manager = TaskManager()
 manager.add("Buy milk", 1)
 manager.add("Cook lunch", 2)
+manager.add("Pay bills", 1)
+manager.add("Call mom", 3)
+manager.add("Read book", 5)
 manager.tasks[0].title = "Buy bread"
 
 
@@ -28,4 +69,17 @@ try:
     manager.add("Oops", 99)
 except ValueError:
     print("Priority must be between 1 and 5")
-print(manager.tasks)
+manager.tasks[0].done = True
+manager.open_tasks()
+manager.done_tasks()
+manager.urgent_tasks()
+print("Open:", manager.open_tasks())
+print("Done:", manager.done_tasks())
+print("Urgent:", manager.urgent_tasks())
+print("Priority 1:", manager.tasks_by_priority(1))
+print("Priority 2:", manager.tasks_by_priority(2))
+print("Priority 3:", manager.tasks_by_priority(3))
+print("Priority 5:", manager.tasks_by_priority(5))
+print("Open titles:", manager.open_titles())
+print("At least 3:", manager.at_least(3))
+print("Open count:", manager.count_open())
