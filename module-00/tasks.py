@@ -8,6 +8,14 @@ class Task:
     done: bool = False
 
 
+def get_priority(task):
+    return task.priority
+
+
+def get_title(task):
+    return task.title
+
+
 class TaskManager:
     def __init__(self):
         self.tasks = []
@@ -76,8 +84,27 @@ class TaskManager:
             if task.title == title:
                 task.priority = new_priority
                 return
-        raise ValueError("Task not found: " + title)  
-
+        raise ValueError("Task not found: " + title) 
+         
+    def remove(self, title):
+        for task in self.tasks:
+            if task.title == title:
+                self.tasks.remove(task)
+                return
+        raise ValueError("Task not found: " + title)
+    
+    def sorted_by_priority(self):
+        return sorted(self.tasks, key=get_priority)
+    
+    def sorted_by_title(self):
+        return sorted(self.tasks, key=get_title)
+    
+    def sorted_by_priority_desc(self):
+        return sorted(self.tasks, key=get_priority, reverse = True)
+    
+    def open_sorted(self):
+        return sorted(self.open_tasks(), key=get_priority)
+    
     
 manager = TaskManager()
 manager.add("Buy milk", 1)
@@ -114,3 +141,14 @@ try:
 except ValueError as f:
     print(f)
 print("Done:", manager.done_tasks())
+manager.remove("Read book")
+print("After remove:", manager.open_titles())
+try:
+    manager.remove("Read book")
+except ValueError as e:
+    print(e)
+print("Original:", manager.tasks)
+print("Sorted:", manager.sorted_by_priority())
+print("Sorted by Title:", manager.sorted_by_title())
+print("Desc.Sorted:", manager.sorted_by_priority_desc())
+print("Open Sorted:", manager.open_sorted())
