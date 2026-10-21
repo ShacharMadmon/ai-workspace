@@ -16,44 +16,67 @@ class TaskManager:
         if priority > 5 or priority < 1:
             raise ValueError("Priority must be between 1 and 5")
         self.tasks.append(Task(title, priority))
+
     def open_tasks(self):
         result = []
         for task in self.tasks:
             if task.done == False:
                 result.append(task)
         return result
+    
     def done_tasks(self):
-            result = []
-            for task in self.tasks:
-                if task.done:
-                    result.append(task)
-            return result
+        result = []
+        for task in self.tasks:
+            if task.done:
+                result.append(task)
+        return result
+    
     def urgent_tasks(self):
         result = []
         for task in self.tasks:
             if task.priority == 1:
                 result.append(task)
         return result
+    
     def tasks_by_priority(self, level):
-            result = []
-            for task in self.tasks:
-                if task.priority == level:
-                    result.append(task)
-            return result
+        result = []
+        for task in self.tasks:
+            if task.priority == level:
+                result.append(task)
+        return result
+    
     def open_titles(self):
-            result = []
-            for task in self.tasks:
-                if task.done == False:
-                    result.append(task.title)
-            return result
+        result = []
+        for task in self.tasks:
+            if task.done == False:
+                result.append(task.title)
+        return result
+    
     def at_least(self, level):
-                result = []
-                for task in self.tasks:
-                    if task.priority >= level:
-                        result.append(task)
-                return result
+        result = []
+        for task in self.tasks:
+            if task.priority >= level:
+                result.append(task)
+        return result
+    
     def count_open(self):
         return len(self.open_tasks())
+    
+    def complete(self, title):
+        for task in self.tasks:
+            if task.title == title:
+                task.done = True
+                return
+        raise ValueError("Task not found: " + title) 
+    
+    def set_priority(self, title, new_priority):
+        if new_priority > 5 or new_priority < 1:
+            raise ValueError("Priority must be between 1 and 5")            
+        for task in self.tasks:
+            if task.title == title:
+                task.priority = new_priority
+                return
+        raise ValueError("Task not found: " + title)  
 
     
 manager = TaskManager()
@@ -70,9 +93,6 @@ try:
 except ValueError:
     print("Priority must be between 1 and 5")
 manager.tasks[0].done = True
-manager.open_tasks()
-manager.done_tasks()
-manager.urgent_tasks()
 print("Open:", manager.open_tasks())
 print("Done:", manager.done_tasks())
 print("Urgent:", manager.urgent_tasks())
@@ -83,3 +103,14 @@ print("Priority 5:", manager.tasks_by_priority(5))
 print("Open titles:", manager.open_titles())
 print("At least 3:", manager.at_least(3))
 print("Open count:", manager.count_open())
+manager.complete("Call mom")
+try:
+    manager.complete("Fly to Mars")
+except ValueError as e:
+    print(e)    
+try:
+    manager.set_priority("Call mom",4)
+    manager.set_priority("Call mon",7)
+except ValueError as f:
+    print(f)
+print("Done:", manager.done_tasks())
