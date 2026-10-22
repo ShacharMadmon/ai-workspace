@@ -8,76 +8,76 @@ class Task:
     done: bool = False
 
 
-def get_priority(task):
+def get_priority(task: Task) -> int:
     return task.priority
 
 
-def get_title(task):
+def get_title(task: Task) -> str:
     return task.title
 
 
 class TaskManager:
-    def __init__(self):
+    def __init__(self) -> None:
         self.tasks = []
 
-    def add(self, title, priority):
+    def add(self, title: str, priority: int) -> None:
         if priority > 5 or priority < 1:
             raise ValueError("Priority must be between 1 and 5")
         self.tasks.append(Task(title, priority))
 
-    def open_tasks(self):
+    def open_tasks(self) -> list[Task]:
         result = []
         for task in self.tasks:
             if task.done == False:
                 result.append(task)
         return result
     
-    def done_tasks(self):
+    def done_tasks(self) -> list[Task]:
         result = []
         for task in self.tasks:
             if task.done:
                 result.append(task)
         return result
     
-    def urgent_tasks(self):
+    def urgent_tasks(self) -> list[Task]:
         result = []
         for task in self.tasks:
             if task.priority == 1:
                 result.append(task)
         return result
     
-    def tasks_by_priority(self, level):
+    def tasks_by_priority(self, level: int) -> list[Task]:
         result = []
         for task in self.tasks:
             if task.priority == level:
                 result.append(task)
         return result
     
-    def open_titles(self):
+    def open_titles(self) -> list[str]:
         result = []
         for task in self.tasks:
             if task.done == False:
                 result.append(task.title)
         return result
     
-    def at_least(self, level):
+    def at_least(self, level: int) -> list[Task]:
         result = []
         for task in self.tasks:
             if task.priority >= level:
                 result.append(task)
         return result
     
-    def count_open(self):
+    def count_open(self) -> int:
         return len(self.open_tasks())
     
-    def complete(self, title):
+    def complete(self, title: str) -> None:
         for task in self.tasks:
             if task.title == title:
                 task.done = True
                 return
         raise ValueError("Task not found: " + title) 
     
-    def set_priority(self, title, new_priority):
+    def set_priority(self, title: str, new_priority: int) -> None:
         if new_priority > 5 or new_priority < 1:
             raise ValueError("Priority must be between 1 and 5")            
         for task in self.tasks:
@@ -86,23 +86,23 @@ class TaskManager:
                 return
         raise ValueError("Task not found: " + title) 
          
-    def remove(self, title):
+    def remove(self, title:str)  -> None:
         for task in self.tasks:
             if task.title == title:
                 self.tasks.remove(task)
                 return
         raise ValueError("Task not found: " + title)
     
-    def sorted_by_priority(self):
+    def sorted_by_priority(self) -> list[Task]:
         return sorted(self.tasks, key=get_priority)
     
-    def sorted_by_title(self):
+    def sorted_by_title(self) -> list[Task]:
         return sorted(self.tasks, key=get_title)
     
-    def sorted_by_priority_desc(self):
+    def sorted_by_priority_desc(self) -> list[Task]:
         return sorted(self.tasks, key=get_priority, reverse = True)
     
-    def open_sorted(self):
+    def open_sorted(self) -> list[Task]:
         return sorted(self.open_tasks(), key=get_priority)
     
     
@@ -152,3 +152,4 @@ print("Sorted:", manager.sorted_by_priority())
 print("Sorted by Title:", manager.sorted_by_title())
 print("Desc.Sorted:", manager.sorted_by_priority_desc())
 print("Open Sorted:", manager.open_sorted())
+print("Level 1 as number:", manager.tasks_by_priority(1))
