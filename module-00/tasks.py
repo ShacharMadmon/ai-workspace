@@ -1,4 +1,6 @@
-from dataclasses import dataclass
+import json
+from pathlib import Path
+from dataclasses import dataclass, asdict
 
 
 @dataclass(slots=True)
@@ -86,7 +88,7 @@ class TaskManager:
                 return
         raise ValueError("Task not found: " + title) 
          
-    def remove(self, title:str)  -> None:
+    def remove(self, title: str)  -> None:
         for task in self.tasks:
             if task.title == title:
                 self.tasks.remove(task)
@@ -100,12 +102,22 @@ class TaskManager:
         return sorted(self.tasks, key=get_title)
     
     def sorted_by_priority_desc(self) -> list[Task]:
-        return sorted(self.tasks, key=get_priority, reverse = True)
+        return sorted(self.tasks, key=get_priority, reverse=True)
     
     def open_sorted(self) -> list[Task]:
         return sorted(self.open_tasks(), key=get_priority)
-    
-    
+    def save(self, path: str) -> None:
+        data = []
+        for task in self.tasks:
+            data.append(asdict(task))
+        text = json.dumps(data, indent=4)
+        Path(path).write_text(text)
+    def load(self, path: str) -> None:
+        text = Path(path).read_text()
+        data = json.loads(text)
+        self.tasks = []
+        for item in data:
+            self.tasks.append(Task(item["title"], item["priority"], item["done"]))
 manager = TaskManager()
 manager.add("Buy milk", 1)
 manager.add("Cook lunch", 2)
@@ -153,3 +165,7 @@ print("Sorted by Title:", manager.sorted_by_title())
 print("Desc.Sorted:", manager.sorted_by_priority_desc())
 print("Open Sorted:", manager.open_sorted())
 print("Level 1 as number:", manager.tasks_by_priority(1))
+manager.save("module-00/tasks.json")
+loaded = TaskManager()
+loaded.load("module-00/tasks.json")
+print("Loaded:", loaded.tasks)

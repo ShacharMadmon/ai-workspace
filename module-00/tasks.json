@@ -1,0 +1,22 @@
+[
+    {
+        "title": "Buy bread",
+        "priority": 1,
+        "done": true
+    },
+    {
+        "title": "Cook lunch",
+        "priority": 2,
+        "done": false
+    },
+    {
+        "title": "Pay bills",
+        "priority": 1,
+        "done": false
+    },
+    {
+        "title": "Call mom",
+        "priority": 4,
+        "done": true
+    }
+]
