@@ -1,0 +1,12 @@
+[
+    {
+        "description": "Coffee",
+        "amount": 12.5,
+        "paid": false
+    },
+    {
+        "description": "Rent",
+        "amount": 4000,
+        "paid": false
+    }
+]
