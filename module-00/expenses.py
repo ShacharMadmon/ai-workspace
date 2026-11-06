@@ -38,20 +38,25 @@ class ExpenseManager:
         for record in reader:
             self.expenses.append(Expense(record["description"], float(record["amount"]), record["paid"] == "True"))
 
-manager = ExpenseManager()
-manager.add("Coffee", 12.5)
-manager.add("Rent", 4000)
-print(manager.expenses)
-try:
-    manager.add("Refund", -50)
-except ValueError as e:
-    print(e)
-manager.save("module-00/expenses.json")
-loaded = ExpenseManager()
-loaded.load("module-00/expenses.json")
-print("Loaded:", loaded.expenses)
-manager.load("module-00/expenses.json")
-print("Reload:", manager.expenses)
-from_csv = ExpenseManager()
-from_csv.load_csv("module-00/expenses.csv")
-print("From CSV:", from_csv.expenses)
+def main() -> None:
+    manager = ExpenseManager()
+    manager.add("Coffee", 12.5)
+    manager.add("Rent", 4000)
+    print(manager.expenses)
+    try:
+        manager.add("Refund", -50)
+    except ValueError as e:
+        print(e)
+    manager.save("module-00/expenses.json")
+    loaded = ExpenseManager()
+    loaded.load("module-00/expenses.json")
+    print("Loaded:", loaded.expenses)
+    manager.load("module-00/expenses.json")
+    print("Reload:", manager.expenses)
+    from_csv = ExpenseManager()
+    from_csv.load_csv("module-00/expenses.csv")
+    print("From CSV:", from_csv.expenses)
+
+
+if __name__ == "__main__":
+    main()
