@@ -1,4 +1,5 @@
 import json
+import csv
 from pathlib import Path
 from dataclasses import dataclass, asdict
 
@@ -29,7 +30,13 @@ class ExpenseManager:
         self.expenses = []
         for item in data:
             self.expenses.append(Expense(item["description"], item["amount"], item["paid"]))
-
+    def load_csv(self, path: str) -> None:
+        text = Path(path).read_text()
+        lines = text.splitlines()
+        reader = csv.DictReader(lines)
+        self.expenses = []
+        for record in reader:
+            self.expenses.append(Expense(record["description"], float(record["amount"]), record["paid"] == "True"))
 
 manager = ExpenseManager()
 manager.add("Coffee", 12.5)
@@ -45,3 +52,6 @@ loaded.load("module-00/expenses.json")
 print("Loaded:", loaded.expenses)
 manager.load("module-00/expenses.json")
 print("Reload:", manager.expenses)
+from_csv = ExpenseManager()
+from_csv.load_csv("module-00/expenses.csv")
+print("From CSV:", from_csv.expenses)
