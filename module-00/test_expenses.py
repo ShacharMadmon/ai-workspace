@@ -1,4 +1,5 @@
 import pytest
+from pathlib import Path
 from expenses import ExpenseManager
 
 
@@ -13,7 +14,18 @@ def test_add_two_expenses() -> None:
     manager.add("Coffee", 12.5)
     manager.add("Rent", 4000)
     assert len(manager.expenses) == 2    
-def test_negative_amount_rejected() -> None:
+def test_save_and_load(tmp_path: Path) -> None:
+    file_path = str(tmp_path / "expenses.json")
+    manager = ExpenseManager()
+    manager.add("Test item", 1.0)
+    manager.save(file_path)
+
+    loaded = ExpenseManager()
+    loaded.load(file_path)
+    assert len(loaded.expenses) == 1
+    assert loaded.expenses[0].description == "Test item"
+@pytest.mark.parametrize("amount", [0, -0.01, -50])
+def test_invalid_amount_rejected(amount: float) -> None:
     manager = ExpenseManager()
     with pytest.raises(ValueError):
-        manager.add("Refund", -50)
+        manager.add("Refund", amount)
