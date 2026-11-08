@@ -29,3 +29,14 @@ def test_invalid_amount_rejected(amount: float) -> None:
     manager = ExpenseManager()
     with pytest.raises(ValueError):
         manager.add("Refund", amount)
+def test_load_csv_converts_types(tmp_path: Path) -> None:
+    csv_file = tmp_path / "expenses.csv"
+    csv_file.write_text("description,amount,paid\nRent,4000,True\n")
+
+    manager = ExpenseManager()
+    manager.load_csv(str(csv_file))
+    expense = manager.expenses[0]
+
+    assert expense.amount == 4000.0
+    assert type(expense.amount) == float
+    assert expense.paid == True
